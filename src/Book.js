@@ -20,7 +20,7 @@ class Book extends React.Component {
             <BookShelfChanger currentShelf={this.props.bookInfo.shelf} />
           </div>
           <div className="book-title">{this.props.bookInfo.title}</div>
-          <div className="book-authors">{this.props.bookInfo.authors}</div>
+          <div className="book-authors">{this.props.bookInfo.authors.join(', ')}</div>
         </div>
       </li>
     )
