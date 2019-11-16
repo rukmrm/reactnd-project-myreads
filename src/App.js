@@ -65,11 +65,15 @@ class BooksApp extends React.Component {
           </div>
           <div className="list-books-content">
             <div>
-              <BookShelf
-                className="a-bookshelf"
-                shelfName={this.state.shelves.currentlyReading.displayName}
-                shelfBooks={this.state.shelves.currentlyReading.books}
-              ></BookShelf>
+              {Object.values(this.state.shelves).map(x => {
+                return (
+                  <BookShelf
+                    className="a-bookshelf"
+                    shelfName={x.displayName}
+                    shelfBooks={x.books}
+                  ></BookShelf>
+                )
+              })}
             </div>
           </div>
         </div>
