@@ -27,10 +27,41 @@ class BooksApp extends React.Component {
     // externalData: null,
   }
 
-  handleBookShelfChange = (bookId, shelf) => {
-    //this.setState({ foo: JSON.stringify(event.target.value) })
-    console.log('this', this)
-    console.log('a, b', bookId, shelf)
+  handleBookShelfChange = (bookId, newShelf) => {
+    console.log('a, b', bookId, newShelf)
+    let prevStateExternalData = this.state.externalData
+    prevStateExternalData.forEach(x => {
+      if (x.id === bookId) x.shelf = newShelf
+    })
+    console.log('prevStateExternalData', prevStateExternalData)
+
+    this.setState({ externalData: prevStateExternalData })
+    let shelves = {
+      currentlyReading: {
+        displayName: 'Currently Reading',
+        books: [],
+        shelfId: 0,
+      },
+      wantToRead: {
+        displayName: 'Want to Read',
+        books: [],
+        shelfId: 1,
+      },
+      read: {
+        displayName: 'Read',
+        books: [],
+        shelfId: 2,
+      },
+    }
+
+    shelves.currentlyReading.books = this.state.externalData.filter(
+      x => x.shelf === 'currentlyReading'
+    )
+    shelves.wantToRead.books = this.state.externalData.filter(x => x.shelf === 'wantToRead')
+    shelves.read.books = this.state.externalData.filter(x => x.shelf === 'read')
+
+    // this.setState({ shelves, shelvesState })
+    this.setState({ shelves })
   }
 
   componentDidMount() {
