@@ -10,18 +10,27 @@ class BooksApp extends React.Component {
       currentlyReading: {
         displayName: 'Currently Reading',
         books: [],
+        shelfId: 0,
       },
       wantToRead: {
         displayName: 'Want to Read',
         books: [],
+        shelfId: 1,
       },
       read: {
         displayName: 'Read',
         books: [],
+        shelfId: 2,
       },
     },
     getAllBooks: BooksAPI.getAll,
     // externalData: null,
+  }
+
+  handleBookShelfChange = (bookId, shelf) => {
+    //this.setState({ foo: JSON.stringify(event.target.value) })
+    console.log('this', this)
+    console.log('a, b', bookId, shelf)
   }
 
   componentDidMount() {
@@ -30,19 +39,22 @@ class BooksApp extends React.Component {
       this.setState({ externalData })
 
       // Also set up arrays sorted by shelf/status
-      // let shelvesState = {
+      // TODO - merge with previous
       let shelves = {
         currentlyReading: {
           displayName: 'Currently Reading',
           books: [],
+          shelfId: 0,
         },
         wantToRead: {
           displayName: 'Want to Read',
           books: [],
+          shelfId: 1,
         },
         read: {
           displayName: 'Read',
           books: [],
+          shelfId: 2,
         },
       }
 
@@ -68,9 +80,11 @@ class BooksApp extends React.Component {
               {Object.values(this.state.shelves).map(x => {
                 return (
                   <BookShelf
+                    key={x.shelfId}
                     className="a-bookshelf"
                     shelfName={x.displayName}
                     shelfBooks={x.books}
+                    handleBookShelfChange={this.handleBookShelfChange}
                   ></BookShelf>
                 )
               })}
