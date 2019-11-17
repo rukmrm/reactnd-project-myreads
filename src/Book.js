@@ -6,7 +6,7 @@ class Book extends React.Component {
 
   render() {
     return (
-      <li>
+      <li key={this.props.bookInfo.id}>
         <div className="book">
           <div className="book-top">
             <div
@@ -17,7 +17,11 @@ class Book extends React.Component {
                 backgroundImage: `url("${this.props.bookInfo.imageLinks.thumbnail}")`,
               }}
             />
-            <BookShelfChanger currentShelf={this.props.bookInfo.shelf} />
+            <BookShelfChanger
+              currentShelf={this.props.bookInfo.shelf}
+              handleBookShelfChange={this.props.handleBookShelfChange}
+              bookId={this.props.bookInfo.id}
+            />
           </div>
           <div className="book-title">{this.props.bookInfo.title}</div>
           <div className="book-authors">{this.props.bookInfo.authors.join(', ')}</div>
