@@ -1,19 +1,29 @@
 import React from 'react'
 
 class BookShelfChanger extends React.Component {
-  state = {}
+  state = { value: this.props.currentShelf }
+
+  options = {
+    move: { displayName: 'Move to...', disabled: true },
+    currentlyReading: { displayName: 'Currently Reading', disabled: false },
+    wantToRead: { displayName: 'Want to Read', disabled: false },
+    read: { displayName: 'Read', disabled: false },
+    none: { displayName: 'None', disabled: false },
+  }
 
   render() {
     return (
-      <div className="book-shelf-changer">
-        <select>
-          <option value="move" disabled>
-            Move to...
-          </option>
-          <option value="currentlyReading">Currently Reading</option>
-          <option value="wantToRead">Want to Read</option>
-          <option value="read">Read</option>
-          <option value="none">None</option>
+      <div key={this.props.bookId} className="book-shelf-changer">
+        <select
+          onChange={e => this.props.handleBookShelfChange(this.props.bookId, this.state.value)}
+        >
+          {Object.entries(this.options).map((e, ei) => {
+            return (
+              <option key={ei} value={e[0]} disabled={e[1].disabled || e[0] === this.state.value}>
+                {e[1].displayName}
+              </option>
+            )
+          })}
         </select>
       </div>
     )
