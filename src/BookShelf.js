@@ -12,7 +12,14 @@ class BookShelf extends React.Component {
         <div className="bookshelf-books">
           <ol className="books-grid">
             {this.props.shelfBooks.map(x => {
-              return <Book className="book" bookInfo={x} />
+              return (
+                <Book
+                  key={x.id}
+                  className="book"
+                  bookInfo={x}
+                  handleBookShelfChange={this.props.handleBookShelfChange}
+                />
+              )
             })}
           </ol>
         </div>
