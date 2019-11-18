@@ -1,6 +1,7 @@
 import React from 'react'
 import * as BooksAPI from './BooksAPI'
-import BookShelf from './BookShelf.js'
+import BookSearchPage from './BookSearchPage.js'
+import BookShelfDisplayPage from './BookShelfDisplayPage.js'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -64,6 +65,10 @@ class BooksApp extends React.Component {
     this.setState({ shelves })
   }
 
+  handleShowSearchPage = () => {
+    this.setState({ showSearchPage: false })
+  }
+
   componentDidMount() {
     this._asyncRequest = BooksAPI.getAll().then(externalData => {
       this._asyncRequest = null
@@ -101,27 +106,19 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {console.log(this.state.externalData)}
-        <div className="list-books">
-          <div className="list-books-title">
-            <h1>MyReads</h1>
-          </div>
-          <div className="list-books-content">
-            <div>
-              {Object.values(this.state.shelves).map(x => {
-                return (
-                  <BookShelf
-                    key={x.shelfId}
-                    className="a-bookshelf"
-                    shelfName={x.displayName}
-                    shelfBooks={x.books}
-                    handleBookShelfChange={this.handleBookShelfChange}
-                  ></BookShelf>
-                )
-              })}
+        {this.state.showSearchPage ? (
+          <BookSearchPage handleShowSearchPage={this.handleShowSearchPage} />
+        ) : (
+          <div className="list-books">
+            <BookShelfDisplayPage
+              handleBookShelfChange={this.handleBookShelfChange}
+              shelves={this.state.shelves}
+            />
+            <div className="open-search">
+              <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
             </div>
           </div>
-        </div>
+        )}
       </div>
     )
   }
