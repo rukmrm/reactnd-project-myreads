@@ -69,6 +69,16 @@ class BooksApp extends React.Component {
     this.setState({ showSearchPage: false })
   }
 
+  handleSearch = query => {
+    console.log('query', query)
+    let searchResults = this.state.externalData.filter(x => {
+      if (x.title.toLowerCase().includes(query.toLowerCase())) return true
+      return false
+    })
+    this.setState({ searchResults: searchResults })
+    this.setState({ searchQuery: query })
+  }
+
   componentDidMount() {
     this._asyncRequest = BooksAPI.getAll().then(externalData => {
       this._asyncRequest = null
@@ -107,7 +117,11 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <BookSearchPage handleShowSearchPage={this.handleShowSearchPage} />
+          <BookSearchPage
+            handleShowSearchPage={this.handleShowSearchPage}
+            handleSearch={this.handleSearch}
+            searchResults={this.state.searchResults}
+          />
         ) : (
           <div className="list-books">
             <BookShelfDisplayPage
