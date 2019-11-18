@@ -1,4 +1,5 @@
 import React from 'react'
+import Book from './Book.js'
 
 class BookSearchPage extends React.Component {
   state = { value: this.props.searchQuery }
@@ -23,7 +24,14 @@ class BookSearchPage extends React.Component {
           <ol className="books-grid">
             {this.props.searchResults
               ? this.props.searchResults.map(x => {
-                  return <li key={x.id}> {x.title}</li>
+                  return (
+                    <Book
+                      key={x.id}
+                      className="book"
+                      bookInfo={x}
+                      handleBookShelfChange={this.props.handleBookShelfChange}
+                    />
+                  )
                 })
               : ''}
           </ol>

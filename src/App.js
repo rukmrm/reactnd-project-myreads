@@ -120,6 +120,7 @@ class BooksApp extends React.Component {
           <BookSearchPage
             handleShowSearchPage={this.handleShowSearchPage}
             handleSearch={this.handleSearch}
+            handleBookShelfChange={this.handleBookShelfChange}
             searchResults={this.state.searchResults}
           />
         ) : (
