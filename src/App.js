@@ -72,13 +72,20 @@ class BooksApp extends React.Component {
   }
 
   handleSearch = query => {
-    let searchResults = this.state.externalData.filter(x => {
-      if (typeof query === 'undefined' || query === '') return false
-      if (x.title.toLowerCase().includes(query.trim().toLowerCase())) return true
-      return false
+    this._asyncRequest = BooksAPI.search(query).then(searchResults => {
+      this._asyncRequest = null
+      this.setState({ searchResults })
+
+      /*
+      let searchResults = this.state.externalData.filter(x => {
+        if (typeof query === 'undefined' || query === '') return false
+        if (x.title.toLowerCase().includes(query.trim().toLowerCase())) return true
+        return false
+      })
+      this.setState({ searchResults: searchResults })
+      */
+      this.setState({ searchQuery: query })
     })
-    this.setState({ searchResults: searchResults })
-    this.setState({ searchQuery: query })
   }
 
   componentDidMount() {
