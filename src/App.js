@@ -28,11 +28,11 @@ class BooksApp extends React.Component {
     // externalData: null,
   }
 
-  handleBookShelfChange = (bookId, newShelf) => {
-    console.log('a, b', bookId, newShelf)
+  handleBookShelfChange = (bookObj, newShelf) => {
+    // console.log('a, b', bookId, newShelf)
     let prevStateExternalData = this.state.externalData
     prevStateExternalData.forEach(x => {
-      if (x.id === bookId) x.shelf = newShelf
+      if (x.id === bookObj.id) x.shelf = newShelf
     })
     console.log('prevStateExternalData', prevStateExternalData)
 
@@ -63,6 +63,8 @@ class BooksApp extends React.Component {
 
     // this.setState({ shelves, shelvesState })
     this.setState({ shelves })
+
+    this._asyncRequest = BooksAPI.update(bookObj, newShelf)
   }
 
   handleShowSearchPage = () => {

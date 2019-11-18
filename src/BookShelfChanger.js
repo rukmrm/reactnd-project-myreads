@@ -13,11 +13,11 @@ class BookShelfChanger extends React.Component {
 
   render() {
     return (
-      <div key={this.props.bookId} className="book-shelf-changer">
+      <div key={this.props.bookObj.id} className="book-shelf-changer">
         <select
           value={this.props.currentShelf}
           onChange={e =>
-            this.props.handleBookShelfChange(this.props.bookId, e.target.value, this.state.value)
+            this.props.handleBookShelfChange(this.props.bookObj, e.target.value, this.state.value)
           }
         >
           {Object.entries(this.options).map((e, ei) => {
