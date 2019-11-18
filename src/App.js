@@ -70,9 +70,9 @@ class BooksApp extends React.Component {
   }
 
   handleSearch = query => {
-    console.log('query', query)
     let searchResults = this.state.externalData.filter(x => {
-      if (x.title.toLowerCase().includes(query.toLowerCase())) return true
+      if (typeof query === 'undefined' || query === '') return false
+      if (x.title.toLowerCase().includes(query.trim().toLowerCase())) return true
       return false
     })
     this.setState({ searchResults: searchResults })
