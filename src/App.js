@@ -25,7 +25,6 @@ class BooksApp extends React.Component {
       },
     },
     getAllBooks: BooksAPI.getAll,
-    // externalData: null,
   }
 
   handleBookShelfChange = (bookObj, newShelf) => {
@@ -61,7 +60,6 @@ class BooksApp extends React.Component {
     shelves.wantToRead.books = this.state.externalData.filter(x => x.shelf === 'wantToRead')
     shelves.read.books = this.state.externalData.filter(x => x.shelf === 'read')
 
-    // this.setState({ shelves, shelvesState })
     this.setState({ shelves })
 
     this._asyncRequest = BooksAPI.update(bookObj, newShelf)
@@ -72,20 +70,21 @@ class BooksApp extends React.Component {
   }
 
   handleSearch = query => {
-    this._asyncRequest = BooksAPI.search(query).then(searchResults => {
-      this._asyncRequest = null
-      this.setState({ searchResults })
+    this._asyncRequest = BooksAPI.search(query)
+      .then(searchResults => {
+        this._asyncRequest = null
+        if (!searchResults.error) {
+          this.setState({ searchResults: searchResults || [] })
+        } else {
+          console.log('searchResults.error:', searchResults.error)
+          this.setState({ searchResults: [] })
+        }
 
-      /*
-      let searchResults = this.state.externalData.filter(x => {
-        if (typeof query === 'undefined' || query === '') return false
-        if (x.title.toLowerCase().includes(query.trim().toLowerCase())) return true
-        return false
+        this.setState({ searchQuery: query })
       })
-      this.setState({ searchResults: searchResults })
-      */
-      this.setState({ searchQuery: query })
-    })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   componentDidMount() {
@@ -93,8 +92,6 @@ class BooksApp extends React.Component {
       this._asyncRequest = null
       this.setState({ externalData })
 
-      // Also set up arrays sorted by shelf/status
-      // TODO - merge with previous
       let shelves = {
         currentlyReading: {
           displayName: 'Currently Reading',
@@ -117,7 +114,6 @@ class BooksApp extends React.Component {
       shelves.wantToRead.books = externalData.filter(x => x.shelf === 'wantToRead')
       shelves.read.books = externalData.filter(x => x.shelf === 'read')
 
-      // this.setState({ shelves, shelvesState })
       this.setState({ shelves })
     })
   }
