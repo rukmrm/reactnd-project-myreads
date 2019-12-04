@@ -8,19 +8,20 @@ class Book extends React.Component {
     return (
       <li key={this.props.bookInfo.id}>
         <div className="book">
-          {this.props.bookInfo.imageLinks && this.props.bookInfo.imageLinks.thumbnail ? (
+          {this.props.bookInfo.imageLinks &&
+          this.props.bookInfo.imageLinks.thumbnail ? (
             <div className="book-top">
               <div
                 className="book-cover"
                 style={{
                   width: 128,
                   height: 193,
-                  backgroundImage: `url("${this.props.bookInfo.imageLinks.thumbnail}")`,
+                  backgroundImage: `url("${this.props.bookInfo.imageLinks.thumbnail}")`
                 }}
               />
               <BookShelfChanger
                 currentShelf={this.props.bookInfo.shelf}
-                handleBookShelfChange={this.props.handleBookShelfChange}
+                uponBookShelfChange={this.props.uponBookShelfChange}
                 bookObj={this.props.bookInfo}
               />
             </div>
@@ -35,7 +36,9 @@ class Book extends React.Component {
           )}
 
           {this.props.bookInfo.authors ? (
-            <div className="book-authors">{this.props.bookInfo.authors.join(', ')}</div>
+            <div className="book-authors">
+              {this.props.bookInfo.authors.join(', ')}
+            </div>
           ) : (
             ''
           )}

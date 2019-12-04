@@ -4,13 +4,13 @@ import BookShelf from './BookShelf.js'
 class BookShelfDisplayPage extends React.Component {
   state = { value: this.props.currentShelf }
 
-  options = {
+  /*options = {
     move: { displayName: 'Move to...', disabled: true },
     currentlyReading: { displayName: 'Currently Reading', disabled: false },
     wantToRead: { displayName: 'Want to Read', disabled: false },
     read: { displayName: 'Read', disabled: false },
     none: { displayName: 'None', disabled: false },
-  }
+  }*/
 
   render() {
     return (
@@ -27,7 +27,7 @@ class BookShelfDisplayPage extends React.Component {
                   className="a-bookshelf"
                   shelfName={x.displayName}
                   shelfBooks={x.books}
-                  handleBookShelfChange={this.props.handleBookShelfChange}
+                  uponBookShelfChange={this.props.uponBookShelfChange}
                 ></BookShelf>
               )
             })}

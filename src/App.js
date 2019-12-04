@@ -4,6 +4,22 @@ import BookSearchPage from './BookSearchPage.js'
 import BookShelfDisplayPage from './BookShelfDisplayPage.js'
 import './App.css'
 
+/* 
+  1. Can we track the books' shelf directly, without using the shelves var?
+  2. BookshelfChanger:
+    a. Set value from prop or state?
+    b. onChange = (this.props.handleBookShelfChange)
+      or this.handleBookShelfChange ?
+      Can be and must be this.handleBookShelfChange:
+      - Is only needed there
+      - Must know have the bookinfo and the new shelf value
+    c. handleBookShelfChange should take no params
+      i. Implicit param (event), which has select's value: event.target.value
+      ii. Should call another function uponBookShelfChange(bookObj, newShelf)
+    d. uponBookShelfChange can/must be in App.js? Because it sets state? 
+      Or can set app state from BookShelfChanger.js?
+*/
+
 class BooksApp extends React.Component {
   state = {
     showSearchPage: false,
@@ -11,58 +27,40 @@ class BooksApp extends React.Component {
       currentlyReading: {
         displayName: 'Currently Reading',
         books: [],
-        shelfId: 0,
+        shelfId: 0
       },
       wantToRead: {
         displayName: 'Want to Read',
         books: [],
-        shelfId: 1,
+        shelfId: 1
       },
       read: {
         displayName: 'Read',
         books: [],
-        shelfId: 2,
-      },
+        shelfId: 2
+      }
     },
-    getAllBooks: BooksAPI.getAll,
+    getAllBooks: BooksAPI.getAll
   }
 
-  handleBookShelfChange = (bookObj, newShelf) => {
-    // console.log('a, b', bookId, newShelf)
-    let prevStateExternalData = this.state.externalData
-    prevStateExternalData.forEach(x => {
-      if (x.id === bookObj.id) x.shelf = newShelf
-    })
-    console.log('prevStateExternalData', prevStateExternalData)
-
-    this.setState({ externalData: prevStateExternalData })
-    let shelves = {
-      currentlyReading: {
-        displayName: 'Currently Reading',
-        books: [],
-        shelfId: 0,
-      },
-      wantToRead: {
-        displayName: 'Want to Read',
-        books: [],
-        shelfId: 1,
-      },
-      read: {
-        displayName: 'Read',
-        books: [],
-        shelfId: 2,
-      },
+  uponBookShelfChange = (bookObj, newShelf) => {
+    /* this._asyncRequest = BooksAPI.update(bookObj, newShelf).catch(err => {
+      console.log(err)
+      this.setState({ error: true })
+    }) */
+    BooksAPI.update(bookObj, newShelf)
+    if (newShelf === 'none') {
+      this.setState(prevState => ({
+        externalData: prevState.externalData.filter(b => b.id !== bookObj.id)
+      }))
+    } else {
+      bookObj.shelf = newShelf
+      this.setState(prevState => ({
+        externalData: prevState.externalData
+          .filter(b => b.id !== bookObj.id)
+          .concat(bookObj)
+      }))
     }
-
-    shelves.currentlyReading.books = this.state.externalData.filter(
-      x => x.shelf === 'currentlyReading'
-    )
-    shelves.wantToRead.books = this.state.externalData.filter(x => x.shelf === 'wantToRead')
-    shelves.read.books = this.state.externalData.filter(x => x.shelf === 'read')
-
-    this.setState({ shelves })
-
-    this._asyncRequest = BooksAPI.update(bookObj, newShelf)
   }
 
   handleShowSearchPage = () => {
@@ -96,22 +94,26 @@ class BooksApp extends React.Component {
         currentlyReading: {
           displayName: 'Currently Reading',
           books: [],
-          shelfId: 0,
+          shelfId: 0
         },
         wantToRead: {
           displayName: 'Want to Read',
           books: [],
-          shelfId: 1,
+          shelfId: 1
         },
         read: {
           displayName: 'Read',
           books: [],
-          shelfId: 2,
-        },
+          shelfId: 2
+        }
       }
 
-      shelves.currentlyReading.books = externalData.filter(x => x.shelf === 'currentlyReading')
-      shelves.wantToRead.books = externalData.filter(x => x.shelf === 'wantToRead')
+      shelves.currentlyReading.books = externalData.filter(
+        x => x.shelf === 'currentlyReading'
+      )
+      shelves.wantToRead.books = externalData.filter(
+        x => x.shelf === 'wantToRead'
+      )
       shelves.read.books = externalData.filter(x => x.shelf === 'read')
 
       this.setState({ shelves })
@@ -125,17 +127,19 @@ class BooksApp extends React.Component {
           <BookSearchPage
             handleShowSearchPage={this.handleShowSearchPage}
             handleSearch={this.handleSearch}
-            handleBookShelfChange={this.handleBookShelfChange}
+            uponBookShelfChange={this.uponBookShelfChange}
             searchResults={this.state.searchResults}
           />
         ) : (
           <div className="list-books">
             <BookShelfDisplayPage
-              handleBookShelfChange={this.handleBookShelfChange}
+              uponBookShelfChange={this.uponBookShelfChange}
               shelves={this.state.shelves}
             />
             <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
+              <button onClick={() => this.setState({ showSearchPage: true })}>
+                Add a book
+              </button>
             </div>
           </div>
         )}

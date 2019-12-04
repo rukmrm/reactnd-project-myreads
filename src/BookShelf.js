@@ -17,7 +17,7 @@ class BookShelf extends React.Component {
                   key={x.id}
                   className="book"
                   bookInfo={x}
-                  handleBookShelfChange={this.props.handleBookShelfChange}
+                  uponBookShelfChange={this.props.uponBookShelfChange}
                 />
               )
             })}
