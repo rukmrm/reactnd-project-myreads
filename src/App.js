@@ -44,7 +44,9 @@ class BooksApp extends React.Component {
         externalData: prevState.externalData.filter(b => b.id !== bookObj.id)
       }))
     } else {
+      console.log('old shelf', bookObj.shelf)
       bookObj.shelf = newShelf
+      console.log('new shelf', bookObj.shelf)
       this.setState(prevState => ({
         externalData: prevState.externalData
           .filter(b => b.id !== bookObj.id)

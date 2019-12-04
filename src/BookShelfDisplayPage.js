@@ -15,6 +15,7 @@ class BookShelfDisplayPage extends React.Component {
             {this.props.shelves.map(shelf => {
               return (
                 <BookShelf
+                  key={shelf.key}
                   shelfKey={shelf.key}
                   className="a-bookshelf"
                   shelfName={shelf.displayName}
