@@ -20,27 +20,17 @@ import './App.css'
       Or can set app state from BookShelfChanger.js?
 */
 
+const shelves = [
+  { key: 'currentlyReading', displayName: 'Currently Reading' },
+  { key: 'wantToRead', displayName: 'Want to Read' },
+  { key: 'read', displayName: 'Read' }
+]
+
 class BooksApp extends React.Component {
   state = {
     showSearchPage: false,
-    shelves: {
-      currentlyReading: {
-        displayName: 'Currently Reading',
-        books: [],
-        shelfId: 0
-      },
-      wantToRead: {
-        displayName: 'Want to Read',
-        books: [],
-        shelfId: 1
-      },
-      read: {
-        displayName: 'Read',
-        books: [],
-        shelfId: 2
-      }
-    },
-    getAllBooks: BooksAPI.getAll
+    getAllBooks: BooksAPI.getAll,
+    externalData: []
   }
 
   uponBookShelfChange = (bookObj, newShelf) => {
@@ -89,25 +79,7 @@ class BooksApp extends React.Component {
     this._asyncRequest = BooksAPI.getAll().then(externalData => {
       this._asyncRequest = null
       this.setState({ externalData })
-
-      let shelves = {
-        currentlyReading: {
-          displayName: 'Currently Reading',
-          books: [],
-          shelfId: 0
-        },
-        wantToRead: {
-          displayName: 'Want to Read',
-          books: [],
-          shelfId: 1
-        },
-        read: {
-          displayName: 'Read',
-          books: [],
-          shelfId: 2
-        }
-      }
-
+      /* 
       shelves.currentlyReading.books = externalData.filter(
         x => x.shelf === 'currentlyReading'
       )
@@ -117,6 +89,7 @@ class BooksApp extends React.Component {
       shelves.read.books = externalData.filter(x => x.shelf === 'read')
 
       this.setState({ shelves })
+      */
     })
   }
 
@@ -134,7 +107,8 @@ class BooksApp extends React.Component {
           <div className="list-books">
             <BookShelfDisplayPage
               uponBookShelfChange={this.uponBookShelfChange}
-              shelves={this.state.shelves}
+              shelves={shelves}
+              externalData={this.state.externalData}
             />
             <div className="open-search">
               <button onClick={() => this.setState({ showSearchPage: true })}>

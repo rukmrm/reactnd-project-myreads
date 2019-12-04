@@ -2,17 +2,9 @@ import React from 'react'
 import BookShelf from './BookShelf.js'
 
 class BookShelfDisplayPage extends React.Component {
-  state = { value: this.props.currentShelf }
-
-  /*options = {
-    move: { displayName: 'Move to...', disabled: true },
-    currentlyReading: { displayName: 'Currently Reading', disabled: false },
-    wantToRead: { displayName: 'Want to Read', disabled: false },
-    read: { displayName: 'Read', disabled: false },
-    none: { displayName: 'None', disabled: false },
-  }*/
-
   render() {
+    const externalData = this.props.externalData
+    const uponBookShelfChange = this.props.uponBookShelfChange
     return (
       <div>
         <div className="list-books-title">
@@ -20,17 +12,18 @@ class BookShelfDisplayPage extends React.Component {
         </div>
         <div className="list-books-content">
           <div>
-            {Object.values(this.props.shelves).map(x => {
+            {this.props.shelves.map(shelf => {
               return (
                 <BookShelf
-                  key={x.shelfId}
+                  shelfKey={shelf.key}
                   className="a-bookshelf"
-                  shelfName={x.displayName}
-                  shelfBooks={x.books}
-                  uponBookShelfChange={this.props.uponBookShelfChange}
+                  shelfName={shelf.displayName}
+                  externalData={externalData}
+                  uponBookShelfChange={uponBookShelfChange}
                 ></BookShelf>
               )
             })}
+            })
           </div>
         </div>
       </div>
