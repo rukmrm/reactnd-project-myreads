@@ -8,14 +8,17 @@ class BookSearchPage extends React.Component {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <button className="close-search" onClick={this.props.handleShowSearchPage}>
+          <button
+            className="close-search"
+            onClick={this.props.handleShowSearchPage}
+          >
             Close
           </button>
           <div className="search-books-input-wrapper">
             <input
               type="text"
               value={this.props.searchQuery}
-              placeholder="Search by title or author"
+              placeholder="Search by subject"
               onChange={e => this.props.handleSearch(e.target.value)}
             />
           </div>
@@ -29,7 +32,7 @@ class BookSearchPage extends React.Component {
                       key={x.id}
                       className="book"
                       bookInfo={x}
-                      handleBookShelfChange={this.props.handleBookShelfChange}
+                      uponBookShelfChange={this.props.uponBookShelfChange}
                     />
                   )
                 })
