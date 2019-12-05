@@ -18,7 +18,7 @@ class BookSearchPage extends React.Component {
             <input
               type="text"
               value={this.props.searchQuery}
-              placeholder="Search by title or author"
+              placeholder="Search by subject"
               onChange={e => this.props.handleSearch(e.target.value)}
             />
           </div>

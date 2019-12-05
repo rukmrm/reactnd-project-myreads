@@ -60,21 +60,25 @@ class BooksApp extends React.Component {
   }
 
   handleSearch = query => {
-    this._asyncRequest = BooksAPI.search(query)
-      .then(searchResults => {
-        this._asyncRequest = null
-        if (!searchResults.error) {
-          this.setState({ searchResults: searchResults || [] })
-        } else {
-          console.log('searchResults.error:', searchResults.error)
-          this.setState({ searchResults: [] })
-        }
+    if (query.length > 0) {
+      this._asyncRequest = BooksAPI.search(query)
+        .then(searchResults => {
+          this._asyncRequest = null
+          if (!searchResults.error) {
+            this.setState({ searchResults: searchResults || [] })
+          } else {
+            console.log('searchResults.error:', searchResults.error)
+            this.setState({ searchResults: [] })
+          }
 
-        this.setState({ searchQuery: query })
-      })
-      .catch(error => {
-        console.log(error)
-      })
+          this.setState({ searchQuery: query })
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    } else {
+      this.setState({ searchResults: [] })
+    }
   }
 
   componentDidMount() {

@@ -3,14 +3,9 @@ import React from 'react'
 class BookShelfChanger extends React.Component {
   state = { value: this.props.currentShelf || 'none' }
 
-  // handleBookShelfChange = (bookObj, newShelf) => {
   handleBookShelfChange = event => {
     this.setState({ value: event.target.value })
     this.props.uponBookShelfChange(this.props.bookObj, event.target.value)
-
-    // const { value } = event.target
-    // this.setState({ value })
-    // this.props.uponBookShelfChange(this.props.bookObj, value)
   }
 
   render() {
