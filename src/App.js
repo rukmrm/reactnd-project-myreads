@@ -65,6 +65,15 @@ class BooksApp extends React.Component {
         .then(searchResults => {
           this._asyncRequest = null
           if (!searchResults.error) {
+            // merge any shelf info
+            searchResults = searchResults.map(searchBook => {
+              this.state.externalData.map(x => {
+                if (searchBook.id === x.id) {
+                  searchBook.shelf = x.shelf
+                }
+              })
+              return searchBook
+            })
             this.setState({ searchResults: searchResults || [] })
           } else {
             console.log('searchResults.error:', searchResults.error)
@@ -85,17 +94,6 @@ class BooksApp extends React.Component {
     this._asyncRequest = BooksAPI.getAll().then(externalData => {
       this._asyncRequest = null
       this.setState({ externalData })
-      /* 
-      shelves.currentlyReading.books = externalData.filter(
-        x => x.shelf === 'currentlyReading'
-      )
-      shelves.wantToRead.books = externalData.filter(
-        x => x.shelf === 'wantToRead'
-      )
-      shelves.read.books = externalData.filter(x => x.shelf === 'read')
-
-      this.setState({ shelves })
-      */
     })
   }
 
