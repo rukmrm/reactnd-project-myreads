@@ -1,12 +1,12 @@
 import React from 'react'
+import { Link, Route } from 'react-router-dom'
 import * as BooksAPI from './BooksAPI'
 import BookSearchPage from './BookSearchPage.js'
 import BookShelfDisplayPage from './BookShelfDisplayPage.js'
 import './App.css'
 
 /* 
-  1. Can we track the books' shelf directly, without using the shelves var?
-  2. BookshelfChanger:
+  BookshelfChanger:
     a. Set value from prop or state?
     b. onChange = (this.props.handleBookShelfChange)
       or this.handleBookShelfChange ?
@@ -28,25 +28,18 @@ const shelves = [
 
 class BooksApp extends React.Component {
   state = {
-    showSearchPage: false,
     getAllBooks: BooksAPI.getAll,
     externalData: []
   }
 
   uponBookShelfChange = (bookObj, newShelf) => {
-    /* this._asyncRequest = BooksAPI.update(bookObj, newShelf).catch(err => {
-      console.log(err)
-      this.setState({ error: true })
-    }) */
     BooksAPI.update(bookObj, newShelf)
     if (newShelf === 'none') {
       this.setState(prevState => ({
         externalData: prevState.externalData.filter(b => b.id !== bookObj.id)
       }))
     } else {
-      console.log('old shelf', bookObj.shelf)
       bookObj.shelf = newShelf
-      console.log('new shelf', bookObj.shelf)
       this.setState(prevState => ({
         externalData: prevState.externalData
           .filter(b => b.id !== bookObj.id)
@@ -55,8 +48,9 @@ class BooksApp extends React.Component {
     }
   }
 
-  handleShowSearchPage = () => {
-    this.setState({ showSearchPage: false })
+  handleCloseSearchPage = () => {
+    this.setState({ searchQuery: '' })
+    this.setState({ searchResults: [] })
   }
 
   handleSearch = query => {
@@ -100,14 +94,15 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
+        <Route path="/search">
           <BookSearchPage
-            handleShowSearchPage={this.handleShowSearchPage}
+            handleCloseSearchPage={this.handleCloseSearchPage}
             handleSearch={this.handleSearch}
             uponBookShelfChange={this.uponBookShelfChange}
             searchResults={this.state.searchResults}
           />
-        ) : (
+        </Route>
+        <Route exact path="/">
           <div className="list-books">
             <BookShelfDisplayPage
               uponBookShelfChange={this.uponBookShelfChange}
@@ -115,12 +110,12 @@ class BooksApp extends React.Component {
               externalData={this.state.externalData}
             />
             <div className="open-search">
-              <button onClick={() => this.setState({ showSearchPage: true })}>
-                Add a book
-              </button>
+              <Link to="/search">
+                <button>Add a book</button>
+              </Link>
             </div>
           </div>
-        )}
+        </Route>
       </div>
     )
   }
